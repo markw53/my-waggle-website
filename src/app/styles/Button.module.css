@@ -1,0 +1,49 @@
+/* src/components/common/Button.module.css */
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: none;
+    transition: opacity 0.3s;
+}
+
+.button:disabled {
+    cursor: not-allowed;
+}
+
+.fullWidth {
+    width: 100%;
+}
+
+.contentContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.text {
+    margin: 0;
+}
+
+.icon {
+    margin-right: 8px;
+}
+
+.iconRight {
+    margin-right: 0;
+    margin-left: 8px;
+}
+
+.loadingSpinner {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
