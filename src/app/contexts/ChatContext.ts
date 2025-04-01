@@ -1,5 +1,5 @@
 // src/contexts/ChatContext.ts
-import React, { createContext, useState, useContext, useCallback } from 'react';
+import React, { createContext, useState, useContext, useCallback, ReactNode } from 'react';
 
 interface Message {
   id: number;
@@ -14,6 +14,7 @@ interface ChatContextType {
   clearChat: () => void;
 }
 
+// Create and export the context directly
 export const ChatContext = createContext<ChatContextType | undefined>(undefined);
 
 export const useChat = () => {
@@ -24,7 +25,13 @@ export const useChat = () => {
   return context;
 };
 
-export const ChatProvider: React.FC = ({ children }) => {
+// Define the props interface for ChatProvider
+interface ChatProviderProps {
+  children: ReactNode;
+}
+
+// Export ChatProvider as a named export
+export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
   const [messages, setMessages] = useState<Message[]>([]);
 
   const sendMessage = useCallback((sender: string, content: string) => {
@@ -47,6 +54,7 @@ export const ChatProvider: React.FC = ({ children }) => {
     clearChat
   };
 
+  // Use ChatContext.Provider directly
   return (
     <ChatContext.Provider value={value}>
       {children}
