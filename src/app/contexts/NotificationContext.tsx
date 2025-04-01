@@ -1,5 +1,5 @@
 // src/contexts/NotificationContext.ts
-import React, { createContext, useState, useContext, useCallback } from 'react';
+import React, { createContext, useState, useContext, useCallback, ReactNode } from 'react';
 
 interface Notification {
   id: number;
@@ -13,6 +13,7 @@ interface NotificationContextType {
   removeNotification: (id: number) => void;
 }
 
+// Create and export the context directly
 export const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
 
 export const useNotification = () => {
@@ -23,7 +24,13 @@ export const useNotification = () => {
   return context;
 };
 
-export const NotificationProvider: React.FC = ({ children }) => {
+// Define the props interface for NotificationProvider
+interface NotificationProviderProps {
+  children: ReactNode;
+}
+
+// Export NotificationProvider as a named export
+export const NotificationProvider: React.FC<NotificationProviderProps> = ({ children }: NotificationProviderProps) => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
 
   const addNotification = useCallback((message: string, type: Notification['type']) => {
@@ -46,6 +53,7 @@ export const NotificationProvider: React.FC = ({ children }) => {
     removeNotification
   };
 
+  // Use NotificationContext.Provider directly
   return (
     <NotificationContext.Provider value={value}>
       {children}
@@ -55,7 +63,7 @@ export const NotificationProvider: React.FC = ({ children }) => {
           <div key={notification.id} className={`notification ${notification.type}`}>
             {notification.message}
             <button onClick={() => removeNotification(notification.id)}>X</button>
-        </div>
+          </div>
         ))}
       </div>
     </NotificationContext.Provider>
