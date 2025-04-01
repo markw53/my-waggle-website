@@ -171,10 +171,47 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // Error message handler
   const getErrorMessage = (error) => {
-    // Error message handling as provided in your original code
-    // ...
-  };
+    switch (error.code) {
+        case 'auth/email-already-in-use':
+            return 'This email is already registered';
+        case 'auth/invalid-email':
+            return 'Invalid email address';
+        case 'auth/operation-not-allowed':
+            return 'Operation not allowed';
+        case 'auth/weak-password':
+            return 'Password is too weak';
+        case 'auth/user-disabled':
+            return 'This account has been disabled';
+        case 'auth/user-not-found':
+            return 'No account found with this email';
+        case 'auth/wrong-password':
+            return 'Incorrect password';
+        case 'auth/invalid-verification-code':
+            return 'Invalid verification code';
+        case 'auth/invalid-verification-id':
+            return 'Invalid verification ID';
+        case 'auth/invalid-credential':
+            return 'Invalid credentials';
+        case 'auth/network-request-failed':
+            return 'Network error. Please check your internet connection.';
+        case 'auth/too-many-requests':
+            return 'Too many attempts. Please try again later.';
+        case 'auth/popup-closed-by-user':
+            return 'Authentication cancelled by user';
+        case 'auth/requires-recent-login':
+            return 'Please log in again to complete this action';
+        case 'auth/email-already-verified':
+            return 'Email is already verified';
+        case 'auth/invalid-action-code':
+            return 'Invalid verification link. Please request a new one';
+        case 'auth/expired-action-code':
+            return 'Verification link has expired. Please request a new one';
+        default:
+            return error.message || 'An error occurred during authentication';
+    }
+};
 
   const value = {
     user,
