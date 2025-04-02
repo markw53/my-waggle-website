@@ -1,6 +1,6 @@
 // src/components/FormField.js
 import React from 'react';
-import styles from './FormField.module.css'; // Assuming you're using CSS modules for styling
+import styles from '../styles/Formfield.module.css'; // Assuming you're using CSS modules for styling
 import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Example icons from react-icons for web
 
 export default function FormField({

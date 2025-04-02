@@ -1,6 +1,6 @@
 // src/components/TextFooter.js
 import React from 'react';
-import styles from './TextFooter.module.css'; // Assuming you're using CSS modules for styling
+import styles from '../styles/TextFooter.module.css'; // Assuming you're using CSS modules for styling
 
 const TextFooter = () => {
     return (

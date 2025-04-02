@@ -1,4 +1,5 @@
 // pages/login.js
+"use client";
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
@@ -6,7 +7,7 @@ import styles from '../styles/Login.module.css';
 import { useAuth } from '../contexts/AuthContext'; // Assuming you have this context set up for web
 import { useTheme } from '../contexts/ThemeContext'; // Assuming you have this context set up for web
 import FormField from '../components/FormField'; // You'll need to create or adapt this component
-import Button from '../components/common/Button'; // You'll need to create or adapt this component
+import Button from '../components/common/button'; // You'll need to create or adapt this component
 import TextFooter from '../components/TextFooter'; // You'll need to create or adapt this component
 
 const SocialButton = ({ icon, title, onPress }) => {

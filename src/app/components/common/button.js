@@ -1,6 +1,6 @@
 // src/components/common/Button.js
 import React from 'react';
-import styles from './Button.module.css'; // Assuming you're using CSS modules for styling
+import styles from '../../styles/Button.module.css'; // Assuming you're using CSS modules for styling
 import { useTheme } from '../../contexts/ThemeContext';
 import { FaSpinner } from 'react-icons/fa'; // Example icon from react-icons for loading spinner
 
