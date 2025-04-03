@@ -98,8 +98,8 @@ export default function LoginScreen() {
               required
             />
 
-            <Link href="/forgot-password">
-              <a className={styles.forgotPasswordButton}>Forgot Password?</a>
+            <Link href="/forgot-password" className={styles.forgotPasswordButton}>
+              Forgot Password?
             </Link>
 
             <Button
@@ -121,8 +121,8 @@ export default function LoginScreen() {
 
             <div className={styles.signupContainer}>
               <span className={styles.signupText}>Don't have an account?</span>
-              <Link href="/signup">
-                <a className={styles.signupLink}>Sign Up</a>
+              <Link href="/signup" className={styles.signupLink}>
+                Sign Up
               </Link>
             </div>
           </div>
