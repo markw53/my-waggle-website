@@ -1,15 +1,14 @@
-// pages/layout.tsx
 "use client";
-import React, { useState, useEffect } from 'react';
-import { AppProps } from 'next/app';
-import { AuthProvider } from './contexts/AuthContext';
-import { ThemeProvider } from './contexts/ThemeContext';
-import { LocationProvider } from './contexts/LocationContext';
-import { NotificationProvider } from './contexts/NotificationContext';
+import React, { useState, useEffect } from "react";
+import { AppProps } from "next/app";
+import { AuthProvider } from "./contexts/AuthContext";
+import { ThemeProvider } from "./contexts/ThemeContext";
+import { LocationProvider } from "./contexts/LocationContext";
+import { NotificationProvider } from "./contexts/NotificationContext";
 import { ChatProvider } from "./contexts/ChatContext";
-import './globals.css'; // Import global styles
-import { app, auth, storage } from './config/firebase'; // Assuming you've set up Firebase for web
-import LoadingScreen from './components/LoadingScreen';
+import "./globals.css";
+import { app } from "./config/firebase";
+import LoadingScreen from "./components/LoadingScreen";
 
 // Error Boundary Component for Next.js
 class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean }> {
@@ -18,13 +17,12 @@ class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { has
     this.state = { hasError: false };
   }
 
-  static getDerivedStateFromError(error: Error) {
+  static getDerivedStateFromError() {
     return { hasError: true };
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error('App Error:', error, errorInfo);
-    // In web, you might want to show an error message in a different way, like a modal or redirect
+    console.error("App Error:", error, errorInfo);
   }
 
   render() {
@@ -36,44 +34,26 @@ class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { has
 }
 
 // App State Context
-export const AppStateContext = React.createContext<{
-  appState: { theme: string; language: string };
-  updateAppState: (newState: Partial<{ theme: string; language: string }>) => void;
-}>({
-  appState: { theme: 'light', language: 'en' },
-  updateAppState: () => {},
+export const AppStateContext = React.createContext({
+  appState: { theme: "light", language: "en" },
+  updateAppState: (newState: Partial<{ theme: string; language: string }>) => {},
 });
 
-function MyApp({ Component, pageProps }: AppProps) {
+export default function RootLayout({ Component, pageProps }: AppProps) {
   const [appIsReady, setAppIsReady] = useState(false);
-  const [appState, setAppState] = useState({
-    theme: 'light',
-    language: 'en',
-    // ... other app-wide state
-  });
+  const [appState, setAppState] = useState({ theme: "light", language: "en" });
 
   useEffect(() => {
     async function prepare() {
       try {
-        // Initialize Firebase
-        if (!app) {
-          throw new Error('Firebase app not initialized');
-        }
+        if (!app) throw new Error("Firebase app not initialized");
 
-        // Load fonts (this would typically be done in _document.tsx or through CSS)
-        // For simplicity, we're skipping this here, but you'd set up font loading in Next.js differently
+        const savedAppState = localStorage.getItem("appState");
+        if (savedAppState) setAppState(JSON.parse(savedAppState));
 
-        // Restore app state from localStorage
-        const savedAppState = localStorage.getItem('appState');
-        if (savedAppState) {
-          setAppState(JSON.parse(savedAppState));
-        }
-
-        // Artificial delay for smooth loading
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        await new Promise((resolve) => setTimeout(resolve, 1000));
       } catch (e) {
-        console.warn('Initialization error:', e);
-        // Handle error display in web context, e.g., show a modal or redirect
+        console.warn("Initialization error:", e);
       } finally {
         setAppIsReady(true);
       }
@@ -82,36 +62,40 @@ function MyApp({ Component, pageProps }: AppProps) {
     prepare();
   }, []);
 
-  // Update app state and persist it
   const updateAppState = (newState: Partial<{ theme: string; language: string }>) => {
-    setAppState(prevState => {
+    setAppState((prevState) => {
       const updatedState = { ...prevState, ...newState };
-      localStorage.setItem('appState', JSON.stringify(updatedState));
+      localStorage.setItem("appState", JSON.stringify(updatedState));
       return updatedState;
     });
   };
 
-  if (!appIsReady) {
-    return <LoadingScreen />;
-  }
+  if (!appIsReady) return <LoadingScreen />;
 
   return (
-    <ThemeProvider>
-      <ErrorBoundary>
-        <AppStateContext.Provider value={{ appState, updateAppState }}>
-          <AuthProvider>
-            <ChatProvider>
-              <LocationProvider>
-                <NotificationProvider>
-                  <Component {...pageProps} />
-                </NotificationProvider>
-              </LocationProvider>
-            </ChatProvider>
-          </AuthProvider>
-        </AppStateContext.Provider>
-      </ErrorBoundary>
-    </ThemeProvider>
+    <html lang="en">
+      <head>
+        <meta charSet="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Waggle | Devon's Digital Solutions</title>
+      </head>
+      <body>
+        <ThemeProvider>
+          <ErrorBoundary>
+            <AppStateContext.Provider value={{ appState, updateAppState }}>
+              <AuthProvider>
+                <ChatProvider>
+                  <LocationProvider>
+                    <NotificationProvider>
+                      <Component {...pageProps} />
+                    </NotificationProvider>
+                  </LocationProvider>
+                </ChatProvider>
+              </AuthProvider>
+            </AppStateContext.Provider>
+          </ErrorBoundary>
+        </ThemeProvider>
+      </body>
+    </html>
   );
 }
-
-export default MyApp;
