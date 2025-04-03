@@ -10,8 +10,8 @@ export default function Home() {
         <Image
           src="/background.png" // Ensure this image exists in src/app
           alt="Background"
-          layout="fill"
-          objectFit="cover"
+          fill
+          style={{ objectFit: "cover" }}
           quality={100}
         />
       </div>
