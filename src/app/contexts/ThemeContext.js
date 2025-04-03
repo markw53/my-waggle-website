@@ -1,4 +1,5 @@
 // src/contexts/ThemeContext.js
+"use client";
 import React, { createContext, useContext, useState, useEffect, useCallback, useMemo } from "react";
 import { themes } from "../config/theme";
 

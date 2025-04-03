@@ -1,4 +1,5 @@
 // pages/layout.tsx
+"use client";
 import React, { useState, useEffect } from 'react';
 import { AppProps } from 'next/app';
 import { AuthProvider } from './contexts/AuthContext';
