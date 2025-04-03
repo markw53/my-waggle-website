@@ -1,66 +1,41 @@
-"use client";
-import React, { useState, useEffect } from "react";
-import { AppProps } from "next/app";
+import React, { useState } from "react";
 import { AuthProvider } from "./contexts/AuthContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { LocationProvider } from "./contexts/LocationContext";
 import { NotificationProvider } from "./contexts/NotificationContext";
 import { ChatProvider } from "./contexts/ChatContext";
+import { AppStateContext } from "./contexts/AppStateContext";
 import "./globals.css";
 import { app } from "./config/firebase";
 import LoadingScreen from "./components/LoadingScreen";
 
-// Error Boundary Component for Next.js
-class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean }> {
-  constructor(props: { children: React.ReactNode }) {
-    super(props);
-    this.state = { hasError: false };
-  }
+export const metadata = {
+  title: "Waggle | Devon's Digital Solutions",
+  description: "A modern platform for digital solutions.",
+};
 
-  static getDerivedStateFromError() {
-    return { hasError: true };
-  }
-
-  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error("App Error:", error, errorInfo);
-  }
-
-  render() {
-    if (this.state.hasError) {
-      return <h1>Something went wrong.</h1>;
-    }
-    return this.props.children;
-  }
-}
-
-// App State Context
-export const AppStateContext = React.createContext({
-  appState: { theme: "light", language: "en" },
-  updateAppState: (newState: Partial<{ theme: string; language: string }>) => {},
-});
-
-export default function RootLayout({ Component, pageProps }: AppProps) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   const [appIsReady, setAppIsReady] = useState(false);
   const [appState, setAppState] = useState({ theme: "light", language: "en" });
 
-  useEffect(() => {
-    async function prepare() {
-      try {
-        if (!app) throw new Error("Firebase app not initialized");
+  // useEffect(() => {
+  //   async function prepare() {
+  //     try {
+  //       if (!app) throw new Error("Firebase app not initialized");
 
-        const savedAppState = localStorage.getItem("appState");
-        if (savedAppState) setAppState(JSON.parse(savedAppState));
+  //       const savedAppState = localStorage.getItem("appState");
+  //       if (savedAppState) setAppState(JSON.parse(savedAppState));
 
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-      } catch (e) {
-        console.warn("Initialization error:", e);
-      } finally {
-        setAppIsReady(true);
-      }
-    }
+  //       await new Promise((resolve) => setTimeout(resolve, 1000));
+  //     } catch (e) {
+  //       console.warn("Initialization error:", e);
+  //     } finally {
+  //       setAppIsReady(true);
+  //     }
+  //   }
 
-    prepare();
-  }, []);
+  //   prepare();
+  // }, []);
 
   const updateAppState = (newState: Partial<{ theme: string; language: string }>) => {
     setAppState((prevState) => {
@@ -74,26 +49,19 @@ export default function RootLayout({ Component, pageProps }: AppProps) {
 
   return (
     <html lang="en">
-      <head>
-        <meta charSet="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Waggle | Devon's Digital Solutions</title>
-      </head>
       <body>
         <ThemeProvider>
-          <ErrorBoundary>
-            <AppStateContext.Provider value={{ appState, updateAppState }}>
-              <AuthProvider>
-                <ChatProvider>
-                  <LocationProvider>
-                    <NotificationProvider>
-                      <Component {...pageProps} />
-                    </NotificationProvider>
-                  </LocationProvider>
-                </ChatProvider>
-              </AuthProvider>
-            </AppStateContext.Provider>
-          </ErrorBoundary>
+          <AuthProvider>
+            <ChatProvider>
+              <LocationProvider>
+                <NotificationProvider>
+                  <AppStateContext.Provider value={{ appState, updateAppState }}>
+                    {children}
+                  </AppStateContext.Provider>
+                </NotificationProvider>
+              </LocationProvider>
+            </ChatProvider>
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>
