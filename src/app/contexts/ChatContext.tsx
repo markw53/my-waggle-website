@@ -1,4 +1,5 @@
 // src/contexts/ChatContext.ts
+"use client";
 import React, { createContext, useState, useContext, useCallback, ReactNode } from 'react';
 
 interface Message {

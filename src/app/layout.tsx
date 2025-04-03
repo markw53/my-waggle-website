@@ -6,7 +6,7 @@ import { ThemeProvider } from './contexts/ThemeContext';
 import { LocationProvider } from './contexts/LocationContext';
 import { NotificationProvider } from './contexts/NotificationContext';
 import { ChatProvider } from "./contexts/ChatContext";
-import '../styles/globals.css'; // Import global styles
+import './globals.css'; // Import global styles
 import { app, auth, storage } from './config/firebase'; // Assuming you've set up Firebase for web
 import LoadingScreen from './components/LoadingScreen';
 
