@@ -1,7 +1,3 @@
-import React from "react";
-import styles from "../styles/Formfield.module.css";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
-
 export default function FormField({
   label,
   value,
@@ -13,7 +9,8 @@ export default function FormField({
   type = "text",
   maxLength,
   onIconPress,
-  rightIcon, // Ensure this is not passed down to <input>
+  rightIcon,
+  onRightIconPress, // ✅ Add this prop
   ...props
 }) {
   const [focused, setFocused] = React.useState(false);
@@ -65,11 +62,16 @@ export default function FormField({
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
           type={isPassword && !showPassword ? "password" : type}
-          {...props} // rightIcon is removed from props
+          {...props}
         />
 
         {rightIcon && (
-          <button className={styles.rightIcon} type="button">
+          <button
+            className={styles.rightIcon}
+            type="button"
+            onClick={onRightIconPress} // ✅ Ensure this is handled
+            disabled={!onRightIconPress} // Disable if no function provided
+          >
             {rightIcon}
           </button>
         )}

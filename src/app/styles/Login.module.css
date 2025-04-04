@@ -93,8 +93,9 @@
   
   /* ✅ Fixed Placeholder Text */
   .inputField::placeholder {
-    color: #444;
+    color: #000;
     font-weight: 500;
+    opacity: 1;
   }
   
   /* Social Login Button (Google, etc.) */
