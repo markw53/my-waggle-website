@@ -1,3 +1,7 @@
+import React from "react";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import styles from "../styles/Formfield.module.css"; // Assuming you have a CSS module for styling
+
 export default function FormField({
   label,
   value,
